@@ -1,79 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Real02 : ">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Idea for Team</title>
+    <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <!-- avoid user agent stylesheet from browser by normalise.css or reset.css -->
+    <!-- avoid slow initial connection for SSL by using http instead of https -->
+    <link rel="stylesheet" type='text/css' href="http://necolas.github.io/normalize.css/3.0.2/normalize.css">
 
-    <title>Real02</title>
-  </head>
+    <!-- responsive - Apply simple styling - font -->
+    <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Roboto:400,300,200,100&amp;subset=latin,cyrillic">
+    <!-- <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Roboto'> -->
 
-  <body>
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/leoliu1313/real02">View on GitHub</a>
+    <!-- responsive - Apply simple styling - css -->
+    <link rel="stylesheet" type='text/css' href="mobile.css">
 
-          <h1 id="project_title">Real02</h1>
-          <h2 id="project_tagline"></h2>
+    <!-- responsive - Set your first breakpoint for media queries -->
+    <link rel="stylesheet" type='text/css' media="(min-width: 600px)" href="pc.css">
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/leoliu1313/real02/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/leoliu1313/real02/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+    <title>test01</title>
+</head>
+
+<body>
+    <div class="not-footer">
+        <div id="headline">
+            <div class="container">
+                <header>
+                    <h1>Idea for Team</h1>
+                    <p>Share Idea - Make Decision</p>
+                    <p>A wonderful place to discuss your team project</p>
+                </header>
+                <div class="content">
+                    <div id="#todoapp">
+                    </div>
+                    <form id="login" method="post">
+                        <h3>Existing User</h3>
+                        <p class="error"> </p>
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="username" placeholder="example" novalidate>
+                        <label for="password">Password</label>
+                        <input type="password" class="password" placeholder="*******" novalidate>
+                        <input type="submit" value="Log in">
+                    </form>
+                    <form id="signup" method="post">
+                        <h3>New user</h3>
+                        <p class="error"></p>
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="username" placeholder="example" novalidate>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="email" placeholder="example@example.com" novalidate>
+                        <label for="password">Password</label>
+                        <input type="password" class="password" placeholder="*******" novalidate>
+                        <input type="submit" value="Sign up">
+                    </form>
+                    <div class="float-clear"></div>
+                </div>
+            </div>
+        </div>
+        <div id="section1">
+            <div class="container container-core row-no-margin">
+                <div class="row">
+                    <h1>Project Topic</h1>
+                    <hr>
+                </div>
+                <div class="row">
+                    <div id="id-search-key" class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <form id="addtopic" method="post">
+                                    <p class="error"> </p>
+                                    <div class="col-xs-8 col-md-8">
+                                        <div class="input-group">
+                                            <input id="search-real" type="text" class="form-control search" placeholder="Search or Add New Topic">
+                                            <span id="search-clear" class="glyphicon glyphicon-remove form-control-feedback form-control-clear"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-md-4">
+                                        <input type="submit" class="btn btn-default pull-right" value="Add Topic">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="not-footer-buffer">
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <footer class="footer">
+        <div class="footer-table">
+            <div class="footer-row">
+                <div class="footer-cell">
+                    <div class="container">
+                        <form id="signout" method="post">
+                            <p class="error"> </p>
+                            <input type="submit" value="Log out">
+                        </form>
+                        <p>leoliu1313@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script type="text/javascript" src="jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script type="text/javascript" src="parse-1.4.2.min.js"></script>
+<script src="http://listjs.com/no-cdn/list.js"></script>
+<script src="control.js"></script>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a id="rather-drive-stick" class="anchor" href="#rather-drive-stick" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Real02 maintained by <a href="https://github.com/leoliu1313">leoliu1313</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
 </html>
