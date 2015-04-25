@@ -7,18 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Idea for Team</title>
-    <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <!-- avoid user agent stylesheet from browser by normalise.css or reset.css -->
     <!-- avoid slow initial connection for SSL by using http instead of https -->
-    <link rel="stylesheet" type='text/css' href="http://necolas.github.io/normalize.css/3.0.2/normalize.css">
+    <link rel="stylesheet" type='text/css' href="normalize.css">
 
     <!-- responsive - Apply simple styling - font -->
     <link rel="stylesheet" type='text/css' href="http://fonts.googleapis.com/css?family=Roboto:400,300,200,100&amp;subset=latin,cyrillic">
-    <!-- <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Roboto'> -->
 
     <!-- Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type='text/css' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
     <!-- responsive - Apply simple styling - css -->
     <link rel="stylesheet" type='text/css' href="mobile.css">
@@ -45,20 +44,20 @@
                         <h3>Existing User</h3>
                         <p class="error"> </p>
                         <label for="username">Username</label>
-                        <input type="text" name="username" class="username" placeholder="example" novalidate>
+                        <input type="text" name="username" class="username" placeholder="example">
                         <label for="password">Password</label>
-                        <input type="password" class="password" placeholder="*******" novalidate>
+                        <input type="password" class="password" placeholder="*******">
                         <input type="submit" value="Log in">
                     </form>
                     <form id="signup" method="post">
                         <h3>New user</h3>
                         <p class="error"></p>
                         <label for="username">Username</label>
-                        <input type="text" name="username" class="username" placeholder="example" novalidate>
+                        <input type="text" name="username" class="username" placeholder="example">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="email" placeholder="example@example.com" novalidate>
+                        <input type="email" name="email" class="email" placeholder="example@example.com">
                         <label for="password">Password</label>
-                        <input type="password" class="password" placeholder="*******" novalidate>
+                        <input type="password" class="password" placeholder="*******">
                         <input type="submit" value="Sign up">
                     </form>
                     <div class="float-clear"></div>
@@ -77,13 +76,13 @@
                             <div class="row">
                                 <form id="addtopic" method="post">
                                     <p class="error"> </p>
-                                    <div class="col-xs-8 col-md-8">
-                                        <div class="input-group">
-                                            <input id="search-real" type="text" class="form-control search" placeholder="Search or Add New Topic">
-                                            <span id="search-clear" class="glyphicon glyphicon-remove form-control-feedback form-control-clear"></span>
-                                        </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <input id="search-real" type="text" class="form-control search" placeholder="Search or Add New Topic">
                                     </div>
-                                    <div class="col-xs-4 col-md-4">
+                                    <div class="col-xs-3 col-md-3">
+                                        <input id="search-clear" type="button" class="btn btn-default" value="Reset">
+                                    </div>
+                                    <div class="col-xs-3 col-md-3">
                                         <input type="submit" class="btn btn-default pull-right" value="Add Topic">
                                     </div>
                                 </form>
@@ -116,13 +115,15 @@
             </div>
         </div>
     </footer>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+    <script type="text/javascript" src="list.js"></script>
+    <script type="text/javascript" src="control.js"></script>
+    <!-- right before /body -->
 </body>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script type="text/javascript" src="jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script type="text/javascript" src="parse-1.4.2.min.js"></script>
-<script src="http://listjs.com/no-cdn/list.js"></script>
-<script src="control.js"></script>
 
 </html>

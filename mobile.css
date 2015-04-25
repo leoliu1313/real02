@@ -155,7 +155,6 @@ input[type=password] {
     border: none;
 }
 
-html,
 #section1,
 #signout {
     display: none;
@@ -163,4 +162,9 @@ html,
 
 #section1 .input-group {
     width: 100%;
+}
+
+.list li {
+    border: 0;
+    padding: 0;
 }
