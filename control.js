@@ -34,15 +34,26 @@ $(document).ready(function () {
     }
     cleanup_form();
 
+    function show_section() {
+        if ($.QueryString["id"] == null) {
+            show_section1();
+        } else {
+            show_section2();
+        }
+    }
+
     // set up list
     var options = {
         item: '<li class="list-group-item"><a href="#" class="list-group-item topic-real">' +
             '<p class="TopicName"></p>' +
-            '<p class="TopicOwner"></p>' +
-            '<p class="updatedAt"></p>' +
+            '<div class="row">' +
+            '<div class="col-xs-6 col-sm-12 col-md-3"><p class="CommentCount"></p></div>' +
+            '<div class="col-xs-6 col-sm-6 col-md-3"><p class="TopicOwner"></p></div>' +
+            '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
+            '</div>' +
             '<p class="objectId"></p>' +
             '</a></li>',
-        valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'objectId']
+        valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'CommentCount', 'objectId']
     };
     window.theList = new List('id-search-key', options);
     var options2 = {
@@ -63,16 +74,14 @@ $(document).ready(function () {
     window.ProjectTopic = Parse.Object.extend("ProjectTopic");
     window.CommentTopic = Parse.Object.extend("CommentTopic");
     window.currentUser = Parse.User.current();
+    $("#section1").hide();
+    $("#section2").hide();
     if (window.currentUser) {
         $('#headline').css("background-image", "none");
         $('#login').hide();
         $('#signup').hide();
         $('#signout').show();
-        if ($.QueryString["id"] == null) {
-            show_section1();
-        } else {
-            show_section2();
-        }
+        show_section();
     } else {
         //
     }
@@ -101,9 +110,6 @@ $(document).ready(function () {
     }
 
     function show_section1() {
-        if ($.QueryString["id"] != null) {
-            show_section2();
-        }
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
         }
@@ -122,15 +128,22 @@ $(document).ready(function () {
                         TopicName: object.get('TopicName'),
                         TopicOwner: object.get('TopicOwner'),
                         updatedAt: object.updatedAt.toLocaleString(),
+                        CommentCount: object.get('CommentCount'),
                         objectId: object.id
                     });
                     // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
                 }
                 // update search result
+                window.theList.sort("CommentCount", {
+                    order: "desc"
+                });
                 window.theList.search($("#search-real").val(), ['TopicName']);
                 // set up GET method parsing query strings
                 $("a.list-group-item").each(function (index) {
                     $(this).attr("href", "?id=" + $(this).children(".objectId").text());
+                });
+                $("p.CommentCount").each(function (index) {
+                    $(this).append(" comments");
                 });
                 /*
                 // register event for new items
@@ -153,6 +166,7 @@ $(document).ready(function () {
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
         }
+        window.theList2.clear();
         var query = new Parse.Query(window.ProjectTopic);
         query.get($.QueryString["id"], {
             success: function (object) {
@@ -160,35 +174,37 @@ $(document).ready(function () {
                 $('#section2 .TopicName').text(object.get('TopicName'));
                 $('#section2 .TopicOwner').text(object.get('TopicOwner'));
                 $('#section2 .updatedAt').text(object.updatedAt.toLocaleString());
+                var query = new Parse.Query(window.CommentTopic);
+                query.equalTo("TopicId", $.QueryString["id"]);
+                query.find({
+                    /* wait for server response */
+                    success: function (results) {
+                        // update count
+                        object.set("CommentCount", results.length);
+                        object.save();
+                        // $('#addtopic .error').text("Successfully retrieved " + results.length + " data - ");
+                        for (var i = 0; i < results.length; i++) {
+                            var object2 = results[i];
+                            window.theList2.add({
+                                CommentContent: object2.get('CommentContent'),
+                                CommentOwner: object2.get('CommentOwner'),
+                                updatedAt: object2.updatedAt.toLocaleString(),
+                                objectId: object2.id
+                            });
+                            // $('#addtopic .error').append(object2.get('TopicName') + " / " + object2.get('TopicOwner') + " - ");
+                        }
+                        // update search result
+                        window.theList2.search($("#comment-search-real").val(), ['CommentContent']);
+                    },
+                    error: function (error) {
+                        $('#readcomment .error').text("Error: " + error.code + " " + error.message);
+                    }
+                });
             },
             error: function (object, error) {
                 // The object was not retrieved successfully.
                 // error is a Parse.Error with an error code and message.
                 $('#section2 #section2-get .error').text("Error: " + error.code + " " + error.message);
-            }
-        });
-        window.theList2.clear();
-        var query = new Parse.Query(window.CommentTopic);
-        query.equalTo("TopicId", $.QueryString["id"]);
-        query.find({
-            /* wait for server response */
-            success: function (results) {
-                // $('#addtopic .error').text("Successfully retrieved " + results.length + " data - ");
-                for (var i = 0; i < results.length; i++) {
-                    var object = results[i];
-                    window.theList2.add({
-                        CommentContent: object.get('CommentContent'),
-                        CommentOwner: object.get('CommentOwner'),
-                        updatedAt: object.updatedAt.toLocaleString(),
-                        objectId: object.id
-                    });
-                    // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
-                }
-                // update search result
-                window.theList2.search($("#comment-search-real").val(), ['CommentContent']);
-            },
-            error: function (error) {
-                $('#readcomment .error').text("Error: " + error.code + " " + error.message);
             }
         });
         /* codes keep going without server response */
@@ -227,7 +243,7 @@ $(document).ready(function () {
                 $('#login').hide();
                 $('#signup').hide();
                 cleanup_form();
-                show_section1();
+                show_section();
                 $('#signout').show();
             },
             error: function (user, error) {
@@ -261,7 +277,7 @@ $(document).ready(function () {
                 $('#signup').hide();
                 cleanup_form();
                 $('#signout').show();
-                show_section1();
+                show_section();
             },
             error: function (user, error) {
                 // console.log("error!");
@@ -283,6 +299,7 @@ $(document).ready(function () {
         $('#login').show();
         $('#signup').show();
         $('#section1').hide();
+        $('#section2').hide();
         $('#signout').hide();
         return false;
     });
@@ -303,6 +320,7 @@ $(document).ready(function () {
         var aProjectTopic = new ProjectTopic();
         aProjectTopic.set("TopicName", TopicName);
         aProjectTopic.set("TopicOwner", TopicOwner);
+        aProjectTopic.set("CommentCount", 0);
         aProjectTopic.save(null, {
             success: function (aProjectTopic) {
                 // Execute any logic that should take place after the object is saved.
@@ -381,6 +399,9 @@ $(document).ready(function () {
             $('#search-real').val('');
             $('#search-real').focus();
             $('#search-clear').toggle(false);
+            window.theList.sort("CommentCount", {
+                order: "desc"
+            });
             // change to search TopicOwner column
             // window.theList.search($("#search-real").val(), ['TopicOwner']);
             window.theList.search($("#search-real").val());
