@@ -12,8 +12,12 @@ $(document).ready(function () {
     cleanup_form();
 
     var options = {
-        item: '<li class="list-group-item list-js"><a href="#" class="list-group-item name"></a></li>',
-        valueNames: ['name']
+        item: '<li class="list-group-item"><a href="#" class="list-group-item">' +
+        '<p class="TopicName"></p>' +
+        '<p class="TopicOwner"></p>' +
+        '<p class="updatedAt"></p>' +
+        '</a></li>',
+        valueNames: ['TopicName', 'TopicOwner', 'updatedAt']
     };
     window.theList = new List('id-search-key', options);
     Parse.initialize("gLr9xymyelDTkCD8MTCLt3bVVUgtANSWyA0HUa3P", "P2eQs1HP29cvjU7MHNN8k4iZtXTdqD8xEgKhVDRJ");
@@ -30,6 +34,8 @@ $(document).ready(function () {
     }
 
     $('#search-clear').toggle(false);
+    $('.not-footer').show();
+    $('.footer').show();
 
     /* define function */
 
@@ -48,11 +54,13 @@ $(document).ready(function () {
                 for (var i = 0; i < results.length; i++) {
                     var object = results[i];
                     window.theList.add({
-                        name: object.get('TopicName') + " / " + object.get('TopicOwner')
+                        TopicName: object.get('TopicName'),
+                        TopicOwner: object.get('TopicOwner'),
+                        updatedAt: object.updatedAt
                     });
                     // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
                 }
-                window.theList.search($("#search-real").val());
+                window.theList.search($("#search-real").val(), ['TopicName']);
             },
             error: function (error) {
                 $('#addtopic .error').text("Error: " + error.code + " " + error.message);
@@ -207,6 +215,8 @@ $(document).ready(function () {
             $('#search-real').val('');
             $('#search-real').focus();
             $('#search-clear').toggle(false);
+            // change to search TopicOwner column
+            // window.theList.search($("#search-real").val(), ['TopicOwner']);
             window.theList.search($("#search-real").val());
         }, 100, "search_clear_do_clear");
     };

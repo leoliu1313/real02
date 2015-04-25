@@ -1,19 +1,11 @@
-/* responsive - Constrain the maximum width of the design for wide viewport */
-
 .container {
     margin: auto; /* browser defines it. align in center if element is display: block */
     max-width: 800px;
 }
 
-/* responsive - clear the floats */
-
 .float-clear {
     clear: both;
 }
-
-/* responsive - Increase margin, padding or text size for wide viewport */
-
-/* responsive - Float the Form element for wide viewport */
 
 #headline form {
     float: left;
@@ -27,9 +19,9 @@ h2,
 h3,
 .not-footer p,
 label,
-button[type=text],
-button[type=email],
-button[type=password] {
+input[type=text],
+input[type=email],
+input[type=password] {
     text-align: left;
 }
 
