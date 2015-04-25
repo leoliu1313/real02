@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    
+
     <!-- title and icon -->
     <title>Idea for Team</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -68,8 +68,8 @@
             <div class="container container-core row-no-margin">
                 <div class="row">
                     <h1>Project Topic</h1>
-                    <hr>
                 </div>
+                <div class="buffer-height"></div>
                 <div class="row">
                     <div id="id-search-key" class="panel panel-default">
                         <div class="panel-heading">
@@ -96,8 +96,42 @@
                 </div>
             </div>
         </div>
-        <div class="not-footer-buffer">
+        <div id="section2">
+            <div class="container container-core row-no-margin">
+                <div class="row">
+                    <h1 class="TopicName"></h1>
+                    <hr>
+                    <h3 class="TopicOwner"></h3>
+                    <h4 class="updatedAt"></h4>
+                    <hr>
+                    <h3><a id="go-to-section1" href="#">Back to Project Topic List</a></h3>
+                </div>
+                <div class="buffer-height"></div>
+                <div class="row">
+                    <div id="comment-id-search-key" class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <input id="comment-search-real" type="text" class="form-control search" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3>Add a Comment</h3>
+                    <form id="addcomment" method="post">
+                        <p class="error"> </p>
+                        <textarea id="comment-real" class="form-control custom-control"></textarea>
+                        <input type="submit" class="btn btn-default" value="Submit">
+                    </form>
+                </div>
+                <hr>
+            </div>
         </div>
+        <div class="not-footer-buffer"></div>
     </div>
 
     <footer class="footer">
@@ -115,7 +149,7 @@
             </div>
         </div>
     </footer>
-    
+
     <!-- javascript -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="jquery-2.1.3.min.js"></script>

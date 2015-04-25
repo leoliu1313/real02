@@ -3,6 +3,10 @@
     max-width: 800px;
 }
 
+.container-core {
+    margin-top: 25px;
+}
+
 .float-clear {
     clear: both;
 }
@@ -17,6 +21,7 @@
 h1,
 h2,
 h3,
+h4,
 .not-footer p,
 label,
 input[type=text],
@@ -29,3 +34,6 @@ input[type=password] {
     text-align: middle;
 }
 
+#section2 #comment-real {
+    height: 200px;
+}

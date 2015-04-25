@@ -77,13 +77,20 @@ h1 {
 
 h2 {
     font-weight: 200;
-    font-size: 60px;
+    font-size: 45px;
     text-align: center;
 }
 
 h3 {
     font-weight: 200;
     font-size: 30px;
+    text-align: center;
+}
+
+
+h4 {
+    font-weight: 200;
+    font-size: 15px;
     text-align: center;
 }
 
@@ -101,7 +108,7 @@ input[type=password] {
 }
 
 .row-no-margin .row {
-    margin: 0;
+    margin: 0 auto 0;
 }
 
 #headline input {
@@ -158,6 +165,7 @@ input[type=password] {
 .not-footer,
 .footer,
 #section1,
+#section2,
 #signout {
     display: none;
 }
@@ -171,6 +179,50 @@ input[type=password] {
     padding: 0;
 }
 
+.list li .CommentOwner {
+    font-weight: 200;
+    font-size: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+#section2 .list li .updatedAt {
+    font-weight: 200;
+    font-size: 15px;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.list li span {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.buffer-height {
+    height: 35px;
+}
+
 #section1 .TopicName {
     font-weight: 600;
+}
+
+#section1 .objectId,
+#section2 .objectId {
+    display: none;
+}
+
+#section2 .TopicName {
+    margin-top: 0;
+}
+
+#section2 .CommentContent2 {
+    font-size: 25px;
+    font-weight: 300;
+}
+
+#section2 #comment-real {
+    height: 100px;
+    margin-bottom: 25px;
+    font-size: 18px;
+    resize: none;
 }
