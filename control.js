@@ -21,6 +21,7 @@ $(document).ready(function () {
     })(jQuery);
     window.currentTopicId = $.QueryString["id"];
     window.currentIdeaId = null;
+	window.imgId = 0;
 
     function cleanup_form() {
         $("#signup .username").val("");
@@ -83,13 +84,13 @@ $(document).ready(function () {
             '<input type="submit" class="btn btn-default disagree" value="Disagree">' +
             '</div>' +
             '<div class="row">' +
-            '<p class="FinalVote">Vote: </p>' +
+            '<p class="FinalVote">Vote (0): </p>' +
             '</div>' +
             '<div class="row">' +
-            '<p class="AgreeVote">Agree: </p>' +
+            '<p class="AgreeVote">Agree (0): </p>' +
             '</div>' +
             '<div class="row">' +
-            '<p class="DisagreeVote">Disagree: </p>' +
+            '<p class="DisagreeVote">Disagree (0): </p>' +
             '</div>' +
             '<div class="row">' +
             '<p class="Ratio">Ratio: </p>' +
@@ -139,20 +140,42 @@ $(document).ready(function () {
     })();
 
     /* function IsValidImageUrl(url, callback) { */
-    function IsValidImageUrl(url, string) {
+    function IsValidImageUrl(url, id) {
         // this will start a thread
         // caller codes keep going
         $("<img>", {
             src: url,
             error: function () {
                 // false
-                $(string + " .theText").show();
+                $("#link" + id).text(url);
+                $("#img" + id).hide();
             },
             load: function () {
                 // true
-                $(string + " .theImg").show();
             }
         });
+    }
+
+    function process_comment(input) {
+        var output1 = input.split("\n").join(" <br> ");
+        var output2 = output1.split(" ");
+        for (var i = 0; i < output2.length; i++) {
+            if (output2[i].match(/^http:\/\//) != null ||
+                output2[i].match(/^https:\/\//) != null ) {
+				var url = output2[i];
+				/*
+				output2[i] = "<a target='_blank' href='" + url + "' id='link" + window.imgId + "'>" + url + "</a>" +
+				"<img style='max-width: 100%;' src='" + url + "' alt='" + url + "' id='img" + window.imgId + "'>";
+				*/
+				output2[i] = "<a target='_blank' href='" + url + "' id='link" + window.imgId + "'>" + 
+				"<img style='max-width: 100%;' src='" + url + "' alt='" + url + "' id='img" + window.imgId + "'></a>";
+				IsValidImageUrl(url, window.imgId);
+				window.imgId++;
+		    }
+            // do something with `substr[i]`
+        }
+		var output = output2.join(" ");
+        return output;
     }
 
     function show_section1() {
@@ -209,12 +232,6 @@ $(document).ready(function () {
         });
         /* codes keep going without server response */
         $('#section1').show();
-    }
-
-    function process_comment(input) {
-        var output = input.split("\n").join("</p><p>");
-        output = "<p>" + output + "</p>";
-        return output;
     }
 
     function show_section2() {
@@ -295,22 +312,20 @@ $(document).ready(function () {
                                             success: function (RqueryAllVotes) {
                                                 for (var i = 0; i < RqueryAllVotes.length; i++) {
                                                     var textUpdate = null;
-													if (RqueryAllVotes[i].get("Vote") == 1) {
-														textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.AgreeVote');
-													}
-													else {
-														textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.DisagreeVote');
-													}
+                                                    if (RqueryAllVotes[i].get("Vote") == 1) {
+                                                        textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.AgreeVote');
+                                                    } else {
+                                                        textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.DisagreeVote');
+                                                    }
                                                     var original = textUpdate.text().split("(")[1].split(")");
                                                     var number = parseInt(original[0]);
                                                     number--;
                                                     var name = original[1].replace(window.currentUser.get("username"), "").replace(/ , /g, " ").replace(/, $/g, "");
-													if (RqueryAllVotes[i].get("Vote") == 1) {
-														textUpdate.text("Agree: (" + number + ")" + name);
-													}
-													else {
-														textUpdate.text("Disagree: (" + number + ")" + name);
-													}
+                                                    if (RqueryAllVotes[i].get("Vote") == 1) {
+                                                        textUpdate.text("Agree (" + number + ")" + name);
+                                                    } else {
+                                                        textUpdate.text("Disagree (" + number + ")" + name);
+                                                    }
                                                     RqueryAllVotes[i].destroy();
                                                 }
                                                 var aVoteIdea = new VoteIdea();
@@ -324,8 +339,8 @@ $(document).ready(function () {
                                                         var number = parseInt(original[0]);
                                                         number++;
                                                         var name = original[1] + ", " + window.currentUser.get("username");
-														name = name.replace(/ , /g, " ");
-                                                        textUpdate.text("Agree: (" + number + ")" + name);
+                                                        name = name.replace(/ , /g, " ");
+                                                        textUpdate.text("Agree (" + number + ")" + name);
                                                     },
                                                     error: function (aVoteIdea, error) {
                                                         $('#idea-error').text("Error: " + error.code + " " + error.message);
@@ -352,22 +367,20 @@ $(document).ready(function () {
                                             success: function (RqueryAllVotes) {
                                                 for (var i = 0; i < RqueryAllVotes.length; i++) {
                                                     var textUpdate = null;
-													if (RqueryAllVotes[i].get("Vote") == 1) {
-														textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.AgreeVote');
-													}
-													else {
-														textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.DisagreeVote');
-													}
+                                                    if (RqueryAllVotes[i].get("Vote") == 1) {
+                                                        textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.AgreeVote');
+                                                    } else {
+                                                        textUpdate = $('li#' + RqueryAllVotes[i].get("IdeaId")).find('.DisagreeVote');
+                                                    }
                                                     var original = textUpdate.text().split("(")[1].split(")");
                                                     var number = parseInt(original[0]);
                                                     number--;
                                                     var name = original[1].replace(window.currentUser.get("username"), "").replace(/ , /g, " ").replace(/, $/g, "");
-													if (RqueryAllVotes[i].get("Vote") == 1) {
-														textUpdate.text("Agree: (" + number + ")" + name);
-													}
-													else {
-														textUpdate.text("Disagree: (" + number + ")" + name);
-													}
+                                                    if (RqueryAllVotes[i].get("Vote") == 1) {
+                                                        textUpdate.text("Agree (" + number + ")" + name);
+                                                    } else {
+                                                        textUpdate.text("Disagree (" + number + ")" + name);
+                                                    }
                                                     RqueryAllVotes[i].destroy();
                                                 }
                                                 var aVoteIdea = new VoteIdea();
@@ -381,8 +394,8 @@ $(document).ready(function () {
                                                         var number = parseInt(original[0]);
                                                         number++;
                                                         var name = original[1] + ", " + window.currentUser.get("username");
-														name = name.replace(/ , /g, " ");
-                                                        textUpdate.text("Disagree: (" + number + ")" + name);
+                                                        name = name.replace(/ , /g, " ");
+                                                        textUpdate.text("Disagree (" + number + ")" + name);
                                                     },
                                                     error: function (aVoteIdea, error) {
                                                         $('#idea-error').text("Error: " + error.code + " " + error.message);
@@ -406,15 +419,15 @@ $(document).ready(function () {
                                         queryAllVotes.find({
                                             /* wait for server response */
                                             success: function (RqueryAllVotes) {
-											    // includes all the votes even not matching current topic
-												// NOTE: bad database design
+                                                // includes all the votes even not matching current topic
+                                                // NOTE: bad database design
                                                 for (var i = 0; i < RqueryAllVotes.length; i++) {
-												    var fetchIdeaId = $('li#' + RqueryAllVotes[i].get("IdeaId"));
-												    if (fetchIdeaId.length != 0) {
-													    // match current topic
-														// NOTE: this is a hack
-														// NOTE: hard to maintain the codes.
-												        // NOTE: bad database design
+                                                    var fetchIdeaId = $('li#' + RqueryAllVotes[i].get("IdeaId"));
+                                                    if (fetchIdeaId.length != 0) {
+                                                        // match current topic
+                                                        // NOTE: this is a hack
+                                                        // NOTE: hard to maintain the codes.
+                                                        // NOTE: bad database design
                                                         var textUpdate = fetchIdeaId.find('.FinalVote');
                                                         var original = textUpdate.text().split("(")[1].split(")");
                                                         var number = parseInt(original[0]);
@@ -423,9 +436,9 @@ $(document).ready(function () {
                                                             voteCount: number
                                                         });
                                                         var name = original[1].replace(window.currentUser.get("username"), "").replace(/ , /g, " ").replace(/, $/g, "");
-                                                        textUpdate.text("Vote: (" + number + ")" + name);
+                                                        textUpdate.text("Vote (" + number + ")" + name);
                                                         RqueryAllVotes[i].destroy();
-													}
+                                                    }
                                                 }
                                                 var aVoteIdea = new VoteIdea();
                                                 aVoteIdea.set("Voter", window.currentUser.get("username"));
@@ -441,9 +454,9 @@ $(document).ready(function () {
                                                             voteCount: number
                                                         });
                                                         var name = original[1] + ", " + window.currentUser.get("username");
-														name = name.replace(/ , /g, " ");
-                                                        textUpdate.text("Vote: (" + number + ")" + name);
-														// update best
+                                                        name = name.replace(/ , /g, " ");
+                                                        textUpdate.text("Vote (" + number + ")" + name);
+                                                        // update best
                                                         window.theList3.sort("voteCount", {
                                                             order: "desc"
                                                         });
@@ -521,9 +534,9 @@ $(document).ready(function () {
                                             var agreeFinaltext = listElementForCallback.find('.AgreeVote').text();
                                             var disagreeFinaltext = listElementForCallback.find('.DisagreeVote').text();
                                             var voteFinaltext = listElementForCallback.find('.FinalVote').text();
-                                            agreeFinaltext = agreeFinaltext.replace("Agree:", "Agree (" + agreeCount + "):");
-                                            disagreeFinaltext = disagreeFinaltext.replace("Disagree:", "Disagree (" + disagreeCount + "):");
-                                            voteFinaltext = voteFinaltext.replace("Vote:", "Vote (" + voteCount + "):");
+                                            agreeFinaltext = agreeFinaltext.replace("Agree (0):", "Agree (" + agreeCount + "):");
+                                            disagreeFinaltext = disagreeFinaltext.replace("Disagree (0):", "Disagree (" + disagreeCount + "):");
+                                            voteFinaltext = voteFinaltext.replace("Vote (0):", "Vote (" + voteCount + "):");
                                             agreeFinaltext = agreeFinaltext.replace(/, $/g, "");
                                             disagreeFinaltext = disagreeFinaltext.replace(/, $/g, "");
                                             voteFinaltext = voteFinaltext.replace(/, $/g, "");

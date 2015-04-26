@@ -195,6 +195,10 @@ input[type=password] {
     text-align: left;
 }
 
+.list li.vote .CommentContent {
+  margin-bottom: 15px;
+}
+
 .list li.vote span,
 .list li.decision span {
     background-color: aliceblue;
