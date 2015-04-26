@@ -47,8 +47,8 @@ $(document).ready(function () {
         item: '<li class="list-group-item"><a href="#" class="list-group-item topic-real">' +
         '<p class="TopicName"></p>' +
         '<div class="row">' +
-        '<div class="col-xs-6 col-sm-12 col-md-3"><p class="CommentCount"></p></div>' +
-        '<div class="col-xs-6 col-sm-6 col-md-3"><p class="TopicOwner"></p></div>' +
+        '<div class="col-xs-6 col-sm-3 col-md-3"><p class="CommentCount"></p></div>' +
+        '<div class="col-xs-6 col-sm-3 col-md-3"><p class="TopicOwner"></p></div>' +
         '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
         '</div>' +
         '<p class="objectId"></p>' +
@@ -217,7 +217,8 @@ $(document).ready(function () {
                 // RqueryAllTopics is an object for topic
                 $('#section2 .TopicName').text(RqueryAllTopics.get('TopicName'));
                 $('#section2 .TopicOwner').text(RqueryAllTopics.get('TopicOwner'));
-                $('#section2 .updatedAt').text(RqueryAllTopics.updatedAt.toLocaleString());
+                $('#section2 .createdAt').text("created at " + RqueryAllTopics.createdAt.toLocaleString());
+                $('#section2 .updatedAt').text("updated at " + RqueryAllTopics.updatedAt.toLocaleString());
                 /* access Comment system - use Project Topic ID to get comments */
                 var queryAllComments = new Parse.Query(window.CommentTopic);
                 queryAllComments.equalTo("TopicId", window.currentTopicId);
@@ -226,8 +227,10 @@ $(document).ready(function () {
                     success: function (RqueryAllComments) {
                         // RqueryAllComments is a collection of objects for comment
                         // update count without catching error messages
-                        RqueryAllTopics.set("CommentCount", RqueryAllComments.length);
-                        RqueryAllTopics.save();
+						if (RqueryAllTopics.get("CommentCount") != RqueryAllComments.length) {
+                            RqueryAllTopics.set("CommentCount", RqueryAllComments.length);
+                            RqueryAllTopics.save();
+						}
                         // process RqueryAllComments
                         // for each comment loop
                         for (var i = 0; i < RqueryAllComments.length; i++) {

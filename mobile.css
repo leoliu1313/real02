@@ -239,3 +239,7 @@ input[type=password] {
     resize: none;
 }
 
+.topic-real .TopicOwner,
+.topic-real .updatedAt {
+    text-align: right;
+}
