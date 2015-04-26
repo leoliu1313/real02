@@ -21,7 +21,7 @@ $(document).ready(function () {
     })(jQuery);
     window.currentTopicId = $.QueryString["id"];
     window.currentIdeaId = null;
-	window.imgId = 0;
+    window.imgId = 0;
 
     function cleanup_form() {
         $("#signup .username").val("");
@@ -161,20 +161,20 @@ $(document).ready(function () {
         var output2 = output1.split(" ");
         for (var i = 0; i < output2.length; i++) {
             if (output2[i].match(/^http:\/\//) != null ||
-                output2[i].match(/^https:\/\//) != null ) {
-				var url = output2[i];
-				/*
+                output2[i].match(/^https:\/\//) != null) {
+                var url = output2[i];
+                /*
 				output2[i] = "<a target='_blank' href='" + url + "' id='link" + window.imgId + "'>" + url + "</a>" +
 				"<img style='max-width: 100%;' src='" + url + "' alt='" + url + "' id='img" + window.imgId + "'>";
 				*/
-				output2[i] = "<a target='_blank' href='" + url + "' id='link" + window.imgId + "'>" + 
-				"<img style='max-width: 100%;' src='" + url + "' alt='" + url + "' id='img" + window.imgId + "'></a>";
-				IsValidImageUrl(url, window.imgId);
-				window.imgId++;
-		    }
+                output2[i] = "<a target='_blank' href='" + url + "' id='link" + window.imgId + "'>" +
+                    "<img style='max-width: 100%;' src='" + url + "' alt='" + url + "' id='img" + window.imgId + "'></a>";
+                IsValidImageUrl(url, window.imgId);
+                window.imgId++;
+            }
             // do something with `substr[i]`
         }
-		var output = output2.join(" ");
+        var output = output2.join(" ");
         return output;
     }
 
@@ -803,6 +803,34 @@ $(document).ready(function () {
             }
         });
         return false;
+    });
+    $("#input-upload-file").change(function () {
+        var file = this.files[0];
+        if (!file || !file.type.match(/image.*/)) return;
+        $("#button-upload-file").hide();
+        $("#text-upload-file").text("Uploading...");
+        $("#text-upload-file").show();
+        $("#img-upload-file").hide();
+        /* Lets build a FormData object*/
+        // https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/
+        var fd = new FormData();
+        fd.append("image", file);
+        // Create the XHR (Cross-Domain XHR
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://api.imgur.com/3/image.json");
+        xhr.onload = function () {
+		        var link = JSON.parse(xhr.responseText).data.link;
+                $("#button-upload-file").show();
+                $("#text-upload-file").text("The following is a preview. Pres the above Submit button with url address link.");
+                $("#text-upload-file").show();
+                $("#img-upload-file").attr("src", link);
+                $("#img-upload-file").show();
+				$("#comment-real").val($("#comment-real").val() + "\n" + link + "\n");
+            }
+            // Get your own key http://api.imgur.com/
+        xhr.setRequestHeader('Authorization', 'Client-ID 28aaa2e823b03b1');
+        /* And now, we send the formdata */
+        xhr.send(fd);
     });
     var search_real_sync_up = function () {
         waitForFinalEvent(function () {
