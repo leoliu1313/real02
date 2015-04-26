@@ -227,6 +227,10 @@ input[type=password] {
     display: none;
 }
 
+#section1 #search-real {
+    margin-bottom: 5px;
+}
+
 #section2 .TopicName {
     margin-top: 0;
 }
