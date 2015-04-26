@@ -2,10 +2,10 @@ $(document).ready(function () {
     console.log("ready!");
 
     /* 
-    POST values are not accessible client side
-    GET values can be accessed via
-    window.location.search
-    */
+            POST values are not accessible client side
+            GET values can be accessed via
+            window.location.search
+            */
 
     (function ($) {
         $.QueryString = (function (a) {
@@ -19,7 +19,7 @@ $(document).ready(function () {
             return b;
         })(window.location.search.substr(1).split('&'))
     })(jQuery);
-    // $.QueryString["id"]
+    window.currentTopicId = $.QueryString["id"];
 
     function cleanup_form() {
         $("#signup .username").val("");
@@ -35,7 +35,7 @@ $(document).ready(function () {
     cleanup_form();
 
     function show_section() {
-        if ($.QueryString["id"] == null) {
+        if (window.currentTopicId == null) {
             show_section1();
         } else {
             show_section2();
@@ -45,34 +45,67 @@ $(document).ready(function () {
     // set up list
     var options = {
         item: '<li class="list-group-item"><a href="#" class="list-group-item topic-real">' +
-            '<p class="TopicName"></p>' +
-            '<div class="row">' +
-            '<div class="col-xs-6 col-sm-12 col-md-3"><p class="CommentCount"></p></div>' +
-            '<div class="col-xs-6 col-sm-6 col-md-3"><p class="TopicOwner"></p></div>' +
-            '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
-            '</div>' +
-            '<p class="objectId"></p>' +
-            '</a></li>',
+        '<p class="TopicName"></p>' +
+        '<div class="row">' +
+        '<div class="col-xs-6 col-sm-12 col-md-3"><p class="CommentCount"></p></div>' +
+        '<div class="col-xs-6 col-sm-6 col-md-3"><p class="TopicOwner"></p></div>' +
+        '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
+        '</div>' +
+        '<p class="objectId"></p>' +
+        '</a></li>',
         valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'CommentCount', 'objectId']
     };
     window.theList = new List('id-search-key', options);
     var options2 = {
-        item: '<li class="list-group-item">' +
-            '<p class="CommentOwner"></p>' +
-            '<span class="list-group-item">' +
-            '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
-            '</span>' +
-            '<p class="updatedAt"></p>' +
-            '<p class="objectId"></p>' +
-            '</li>',
+        item: '<li class="list-group-item comment">' +
+        '<p class="CommentOwner"></p>' +
+        '<span class="list-group-item">' +
+        '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
+        '</span>' +
+        '<p class="updatedAt"></p>' +
+        '<p class="objectId"></p>' +
+        '</li>',
         valueNames: ['CommentContent', 'CommentOwner', 'updatedAt', 'objectId']
     };
     window.theList2 = new List('comment-id-search-key', options2);
+    var options3 = {
+        item: '<li class="list-group-item vote not-ready">' +
+        '<p class="CommentOwner"></p>' +
+        '<span class="list-group-item">' + // box begins
+        '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
+        '<div class="row">' +
+        '<p class="UserVote">What do you think about this idea?</p>' +
+        '</div>' +
+        '<div class="btn-group row margin-bottom">' +
+        '<input type="submit" class="btn btn-default vote" value="Vote">' +
+        '<input type="submit" class="btn btn-default agree" value="Agree">' +
+        '<input type="submit" class="btn btn-default disagree" value="Disagree">' +
+        '</div>' +
+        '<div class="row">' +
+        '<p class="FinalVote">Vote: </p>' +
+        '</div>' +
+        '<div class="row">' +
+        '<p class="AgreeVote">Agree: </p>' +
+        '</div>' +
+        '<div class="row">' +
+        '<p class="DisagreeVote">Disagree: </p>' +
+        '</div>' +
+        '<div class="row">' +
+        '<p class="Ratio">Ratio: </p>' +
+        '</div>' +
+        '</span>' + // box ends
+        '<p class="updatedAt"></p>' +
+        '<p class="objectId"></p>' +
+        '</li>',
+        valueNames: ['CommentContent', 'CommentOwner', 'updatedAt', 'objectId', 'agreeCount']
+    };
+    window.theList3 = new List('idea-id-search-key', options3);
 
     // set up parse.com
     Parse.initialize("gLr9xymyelDTkCD8MTCLt3bVVUgtANSWyA0HUa3P", "P2eQs1HP29cvjU7MHNN8k4iZtXTdqD8xEgKhVDRJ");
     window.ProjectTopic = Parse.Object.extend("ProjectTopic");
     window.CommentTopic = Parse.Object.extend("CommentTopic");
+    window.VoteIdea = Parse.Object.extend("VoteIdea");
     window.currentUser = Parse.User.current();
     $("#section1").hide();
     $("#section2").hide();
@@ -113,6 +146,10 @@ $(document).ready(function () {
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
         }
+        else {
+            return;
+        }
+        $('#section1').hide();
         // debug
         // $('#section1').show();
         /* remove the data in the list data structure and the data in the html codes */
@@ -140,19 +177,19 @@ $(document).ready(function () {
                 window.theList.search($("#search-real").val(), ['TopicName']);
                 // set up GET method parsing query strings
                 $("a.list-group-item").each(function (index) {
-                    $(this).attr("href", "?id=" + $(this).children(".objectId").text());
+                    $(this).attr("href", "?id=" + $(this).find(".objectId").text());
                 });
                 $("p.CommentCount").each(function (index) {
                     $(this).append(" comments");
                 });
                 /*
-                // register event for new items
-                $(".topic-real").click(function () {
-                    $('#section1').hide();
-                    show_section2();
-                    return false;
-                });
-                */
+                        // register event for new items
+                        $(".topic-real").click(function () {
+                            $('#section1').hide();
+                            show_section2();
+                            return false;
+                        });
+                        */
             },
             error: function (error) {
                 $('#addtopic .error').text("Error: " + error.code + " " + error.message);
@@ -166,35 +203,206 @@ $(document).ready(function () {
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
         }
+        else {
+            return;
+        }
+        $('#section2').hide();
+        $('#open-idea-zone').hide();
         window.theList2.clear();
-        var query = new Parse.Query(window.ProjectTopic);
-        query.get($.QueryString["id"], {
-            success: function (object) {
-                // The object was retrieved successfully.
-                $('#section2 .TopicName').text(object.get('TopicName'));
-                $('#section2 .TopicOwner').text(object.get('TopicOwner'));
-                $('#section2 .updatedAt').text(object.updatedAt.toLocaleString());
-                var query = new Parse.Query(window.CommentTopic);
-                query.equalTo("TopicId", $.QueryString["id"]);
-                query.find({
+        window.theList3.clear();
+        /* access Project Topic Table - use Project Topic ID to get Project Topic info */
+        var queryAllTopics = new Parse.Query(window.ProjectTopic);
+        queryAllTopics.get(window.currentTopicId, {
+            success: function (RqueryAllTopics) {
+                // RqueryAllTopics is an object for topic
+                $('#section2 .TopicName').text(RqueryAllTopics.get('TopicName'));
+                $('#section2 .TopicOwner').text(RqueryAllTopics.get('TopicOwner'));
+                $('#section2 .updatedAt').text(RqueryAllTopics.updatedAt.toLocaleString());
+                /* access Comment system - use Project Topic ID to get comments */
+                var queryAllComments = new Parse.Query(window.CommentTopic);
+                queryAllComments.equalTo("TopicId", window.currentTopicId);
+                queryAllComments.find({
                     /* wait for server response */
-                    success: function (results) {
-                        // update count
-                        object.set("CommentCount", results.length);
-                        object.save();
-                        // $('#addtopic .error').text("Successfully retrieved " + results.length + " data - ");
-                        for (var i = 0; i < results.length; i++) {
-                            var object2 = results[i];
-                            window.theList2.add({
-                                CommentContent: object2.get('CommentContent'),
-                                CommentOwner: object2.get('CommentOwner'),
-                                updatedAt: object2.updatedAt.toLocaleString(),
-                                objectId: object2.id
-                            });
-                            // $('#addtopic .error').append(object2.get('TopicName') + " / " + object2.get('TopicOwner') + " - ");
-                        }
+                    success: function (RqueryAllComments) {
+                        // RqueryAllComments is a collection of objects for comment
+                        // update count without catching error messages
+                        RqueryAllTopics.set("CommentCount", RqueryAllComments.length);
+                        RqueryAllTopics.save();
+                        // process RqueryAllComments
+                        // for each comment loop
+                        for (var i = 0; i < RqueryAllComments.length; i++) {
+                            var OneComment = RqueryAllComments[i];
+                            // OneComment is an object for comment
+                            if (OneComment.get('Status') == 1) {
+                                // OneComment is used for idea
+                                window.theList3.add({
+                                    CommentContent: OneComment.get('CommentContent'),
+                                    CommentOwner: OneComment.get('CommentOwner'),
+                                    updatedAt: OneComment.updatedAt.toLocaleString(),
+                                    objectId: OneComment.id, // comment id
+                                    agreeCount: 0
+                                });
+                                var listElement = $('li.vote.not-ready');
+                                listElement.attr("id", listElement.find('.objectId').text());
+                                listElement.find('input.agree').attr("for", listElement.attr("id"));
+                                listElement.find('input.agree').click(function () {
+                                    var aVoteIdea = new VoteIdea();
+                                    aVoteIdea.set("Voter", window.currentUser.get("username"));
+                                    aVoteIdea.set("IdeaId", $(this).attr("for"));
+                                    aVoteIdea.set("Vote", 1); // agree
+                                    aVoteIdea.save(null, {
+                                        success: function (aVoteIdea) {
+                                            show_section2();
+                                        },
+                                        error: function (aVoteIdea, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
+                                    return false;
+                                });
+                                listElement.find('input.disagree').attr("for", listElement.attr("id"));
+                                listElement.find('input.disagree').click(function () {
+                                    var aVoteIdea = new VoteIdea();
+                                    aVoteIdea.set("Voter", window.currentUser.get("username"));
+                                    aVoteIdea.set("IdeaId", $(this).attr("for"));
+                                    aVoteIdea.set("Vote", 2); // disagree
+                                    aVoteIdea.save(null, {
+                                        success: function (aVoteIdea) {
+                                            show_section2();
+                                        },
+                                        error: function (aVoteIdea, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
+                                    return false;
+                                });
+                                listElement.find('input.vote').attr("for", listElement.attr("id"));
+                                listElement.find('input.vote').click(function () {
+                                    var aVoteIdea = new VoteIdea();
+                                    aVoteIdea.set("Voter", window.currentUser.get("username"));
+                                    aVoteIdea.set("IdeaId", $(this).attr("for"));
+                                    aVoteIdea.set("Vote", 3); // vote
+                                    aVoteIdea.save(null, {
+                                        success: function (aVoteIdea) {
+                                            show_section2();
+                                        },
+                                        error: function (aVoteIdea, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
+                                    return false;
+                                });
+                                listElement.removeClass("not-ready");
+                                // vote status of this idea/comment
+                                // access Vote table to view pairs of ()
+                                var queryAllVotes = new Parse.Query(window.VoteIdea);
+                                queryAllVotes.equalTo("IdeaId", OneComment.id);
+                                queryAllVotes.find({
+                                    success: function (RqueryAllVotes) {
+                                        if (RqueryAllVotes.length > 0) {
+                                            var listElementForCallback = $('li#' + RqueryAllVotes[0].get('IdeaId'));
+                                            var agreeCount = 0;
+                                            var disagreeCount = 0;
+                                            var voteCount = 0;
+                                            var youAgree = 0;
+                                            var youDisgree = 0;
+                                            var youVote = 0;
+                                            for (var i = 0; i < RqueryAllVotes.length; i++) {
+                                                var OneVote = RqueryAllVotes[i];
+                                                if (OneVote.get('Voter') != null) {
+                                                    if (OneVote.get('Vote') == 1) {
+                                                        listElementForCallback.find('.AgreeVote').append(OneVote.get('Voter') + ", ");
+                                                        agreeCount++;
+                                                    } else if (OneVote.get('Vote') == 2) {
+                                                        listElementForCallback.find('.DisagreeVote').append(OneVote.get('Voter') + ", ");
+                                                        disagreeCount++;
+                                                    } else if (OneVote.get('Vote') == 3) {
+                                                        listElementForCallback.find('.FinalVote').append(OneVote.get('Voter') + ", ");
+                                                        voteCount++;
+                                                    }
+                                                    if (OneVote.get('Voter') == window.currentUser.get("username")) {
+                                                        if (OneVote.get('Vote') == 1) {
+                                                            youAgree = 1;
+                                                        } else if (OneVote.get('Vote') == 2) {
+                                                            youDisagree = 1;
+                                                        } else if (OneVote.get('Vote') == 3) {
+                                                            youVote = 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (youAgree != 0 || youDisgree != 0 || youVote != 0) {
+                                                listElementForCallback.find('.UserVote').text("You ");
+                                                if (youAgree == 1) {
+                                                    listElementForCallback.find('.UserVote').append("agree and ");
+                                                } 
+                                                if (youDisgree == 1) {
+                                                    listElementForCallback.find('.UserVote').append("disagree and ");
+                                                }
+                                                if (youVote == 1) {
+                                                    listElementForCallback.find('.UserVote').append("vote and ");
+                                                }
+                                                listElementForCallback.find('.UserVote').append("help this decision making on " + OneVote.updatedAt.toLocaleString());
+                                            }
+                                            window.theList3.get("objectId", listElementForCallback.attr("id"))[0].values({agreeCount:agreeCount});
+                                            var agreeFinaltext = listElementForCallback.find('.AgreeVote').text();
+                                            var disagreeFinaltext = listElementForCallback.find('.DisagreeVote').text();
+                                            var voteFinaltext = listElementForCallback.find('.FinalVote').text();
+                                            agreeFinaltext = agreeFinaltext.replace("Agree:", "Agree (" + agreeCount + "):");
+                                            disagreeFinaltext = disagreeFinaltext.replace("Disagree:", "Disagree (" + disagreeCount + "):");
+                                            voteFinaltext = voteFinaltext.replace("Vote:", "Vote (" + voteCount + "):");
+                                            agreeFinaltext = agreeFinaltext.replace(/, $/g, "");
+                                            disagreeFinaltext = disagreeFinaltext.replace(/, $/g, "");
+                                            voteFinaltext = voteFinaltext.replace(/, $/g, "");
+                                            listElementForCallback.find('.AgreeVote').text(agreeFinaltext);
+                                            listElementForCallback.find('.DisagreeVote').text(disagreeFinaltext);
+                                            listElementForCallback.find('.FinalVote').text(voteFinaltext);
+                                            var rateFinalnumber = agreeCount / (agreeCount + disagreeCount) * 100;
+                                            listElementForCallback.find('.Ratio').append( rateFinalnumber.toFixed(2) + "%");
+                                        }
+
+                                        // TODO:
+                                        // now we update the list every time we add an idea to the list
+                                        // only need to update once
+                                        // but it is hard to know this comment is the last idea
+                                        window.theList3.sort("agreeCount", {
+                                            order: "desc"
+                                        });
+                                        window.theList3.search($("#idea-search-real").val(), ['CommentContent']);
+										var bestIdea = $('li.vote').first();
+										$("#current-decision").text(bestIdea.find(".CommentContent").text());
+										$("#current-decision-vote").text(bestIdea.find(".FinalVote").text());
+                                    },
+                                    error: function (RqueryAllVotes, error) {
+                                        $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                    }
+                                });
+
+                                window.theList2.add({
+                                    CommentContent: OneComment.get('CommentOwner') +
+                                    " proposed an idea: " +
+                                    OneComment.get('CommentContent'),
+                                    CommentOwner: "",
+                                    updatedAt: OneComment.updatedAt.toLocaleString(),
+                                    objectId: OneComment.id
+                                });
+                                $("li.comment").last().find("span").css("background-color", "aliceblue");
+                                // background color aliceblue
+                                // click to scroll to theList3 directly
+                            } else {
+                                window.theList2.add({
+                                    CommentContent: OneComment.get('CommentContent'),
+                                    CommentOwner: OneComment.get('CommentOwner'),
+                                    updatedAt: OneComment.updatedAt.toLocaleString(),
+                                    objectId: OneComment.id
+                                });
+                            }
+                        } // for each comment loop
+
                         // update search result
                         window.theList2.search($("#comment-search-real").val(), ['CommentContent']);
+                        $('#open-idea-zone').show();
+                        $("html, body").scrollTop(0);
                     },
                     error: function (error) {
                         $('#readcomment .error').text("Error: " + error.code + " " + error.message);
@@ -214,14 +422,14 @@ $(document).ready(function () {
     /* register event */
 
     $("#signup").submit(function (e) {
-        var username = $("#signup .username").val();
-        var email = $("#signup .email").val();
+        var username = $("#signup .username").val().trim();
+        var email = $("#signup .email").val().trim();
         var password = $("#signup .password").val();
-        if (username == "") {
-            $('#signup .error').text("username is required");
+        if (username.match(/^[a-zA-Z0-9 ]+$/) == null) {
+            $('#signup .error').text("username is required as characters, number, and spaces");
             return false;
         }
-        if (email.match(/\w+@\w+\.\w+/g) == null) {
+        if (email.match(/\w+@\w+\.\w+/) == null) {
             $('#signup .error').text("email format is required as <word>@<word>.<word>");
             return false;
         }
@@ -350,9 +558,10 @@ $(document).ready(function () {
             return false;
         }
         var aCommentTopic = new CommentTopic();
-        aCommentTopic.set("TopicId", $.QueryString["id"]);
+        aCommentTopic.set("TopicId", window.currentTopicId);
         aCommentTopic.set("CommentContent", CommentContent);
         aCommentTopic.set("CommentOwner", CommentOwner);
+        aCommentTopic.set("Status", 0);
         aCommentTopic.save(null, {
             success: function (aCommentTopic) {
                 // Execute any logic that should take place after the object is saved.
@@ -373,6 +582,53 @@ $(document).ready(function () {
         $.QueryString["id"] = null;
         $('#section2').hide();
         show_section1();
+        return false;
+    });
+    $("#open-idea-zone").click(function () {
+        $("#open-idea-zone").hide();
+        $("#idea-zone").show();
+        return false;
+    });
+    $("#close-idea-zone").click(function () {
+        $("#idea-zone").hide();
+        $("#open-idea-zone").show();
+        return false;
+    });
+    $("#addidea").submit(function (e) {
+        var CommentContent = $("#idea-real").val();
+        var CommentOwner = "";
+        if (window.currentUser) {
+            CommentOwner = window.currentUser.get("username");
+        }
+        if (CommentContent == "") {
+            $('#addidea .error').text("this field is required");
+            return false;
+        }
+        if (CommentOwner == "") {
+            $('#addidea .error').text("log-in is required");
+            return false;
+        }
+        var aCommentTopic = new CommentTopic();
+        aCommentTopic.set("TopicId", $.QueryString["id"]);
+        aCommentTopic.set("CommentContent", CommentContent);
+        aCommentTopic.set("CommentOwner", CommentOwner);
+        aCommentTopic.set("Status", 1);
+        aCommentTopic.save(null, {
+            success: function (aCommentTopic) {
+                // Execute any logic that should take place after the object is saved.
+                // alert('New object created with objectId: ' + gameScore.id);
+                $('#addidea .error').text("");
+                $("#idea-real").val("");
+                $("#idea-zone").hide();
+                $("#open-idea-zone").show();
+                show_section2();
+            },
+            error: function (aCommentTopic, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                $('#addidea .error').text("Error: " + error.code + " " + error.message);
+            }
+        });
         return false;
     });
     var waitForFinalEvent = (function () {

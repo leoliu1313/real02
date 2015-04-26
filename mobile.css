@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Roboto, helvetica, arial, sans-serif;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 18px;
 }
 
@@ -70,26 +70,26 @@ body {
 }
 
 h1 {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 60px;
     text-align: center;
 }
 
 h2 {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 45px;
     text-align: center;
 }
 
 h3 {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 30px;
     text-align: center;
 }
 
 
 h4 {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 15px;
     text-align: center;
 }
@@ -109,6 +109,10 @@ input[type=password] {
 
 .row-no-margin .row {
     margin: 0 auto 0;
+}
+
+.row.margin-bottom {
+  margin-bottom: 15px;
 }
 
 #headline input {
@@ -153,7 +157,7 @@ input[type=password] {
     display: block;
     font-size: 1.2em;
     margin-bottom: 0.2em;
-    font-weight: 200;
+    font-weight: 300;
 }
 
 #headline form input[type=submit] {
@@ -180,14 +184,19 @@ input[type=password] {
 }
 
 .list li .CommentOwner {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 15px;
     margin-bottom: 5px;
     text-align: left;
 }
 
+.list li.vote span,
+.list li.decision span {
+    background-color: aliceblue;
+}
+
 #section2 .list li .updatedAt {
-    font-weight: 200;
+    font-weight: 300;
     font-size: 15px;
     margin-top: 5px;
     text-align: right;
@@ -207,7 +216,8 @@ input[type=password] {
 }
 
 #section1 .objectId,
-#section2 .objectId {
+#section2 .objectId,
+#section2 #idea-zone {
     display: none;
 }
 
@@ -215,14 +225,17 @@ input[type=password] {
     margin-top: 0;
 }
 
-#section2 .CommentContent2 {
+#section2 .CommentContent2,
+#section2 #current-decision {
     font-size: 25px;
     font-weight: 300;
 }
 
-#section2 #comment-real {
+#section2 #comment-real,
+#section2 #idea-real {
     height: 100px;
     margin-bottom: 25px;
     font-size: 18px;
     resize: none;
 }
+

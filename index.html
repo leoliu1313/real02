@@ -101,13 +101,64 @@
                 <div class="row">
                     <h1 class="TopicName"></h1>
                     <hr>
-                    <h3 class="TopicOwner"></h3>
-                    <h4 class="updatedAt"></h4>
-                    <hr>
-                    <h3><a id="go-to-section1" href="#">Back to Project Topic List</a></h3>
+                    <div class="col-xs-6 col-md-6">
+                        <h3 class="TopicOwner"></h3>
+                        <h4 class="updatedAt"></h4>
+                    </div>
+                    <div class="col-xs-6 col-md-6">
+                        <h3><a id="go-to-section1" href="#">Back to Project Topic List</a></h3>
+                    </div>
                 </div>
                 <div class="buffer-height"></div>
                 <div class="row">
+                    <h3>Current Decision</h3>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="list-group list">
+                                <li class="list-group-item decision">
+                                    <p id="current-decision-vote"></p>
+                                    <span class="list-group-item">
+                                            <p id="current-decision">N/A</p>
+                                        </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="buffer-height"></div>
+                <div class="row">
+                    <h3>Proposed Idea</h3>
+                    <p id="idea-error" class="error"> </p>
+                    <div id="idea-id-search-key" class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <input id="idea-search-real" type="text" class="form-control search" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <input id="open-idea-zone" type="button" class="btn btn-default" value="Press here to propose an idea">
+                    <div id="idea-zone">
+                        <p>A proposed idea is one of the decision choices and will be voted by everyone</p>
+                        <p>Everyone can agree or disagree with multiple proposed ideas</p>
+                        <p>But, only one idea can be voted as the final decision</p>
+                        <form id="addidea" method="post">
+                            <p class="error"> </p>
+                            <textarea id="idea-real" class="form-control custom-control"></textarea>
+                            <input type="submit" class="btn btn-default" value="Propose this idea">
+                            <input id="close-idea-zone" type="button" class="btn btn-default" value="Close">
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+                <div class="buffer-height"></div>
+                <div class="row">
+                    <h3>Discussion</h3>
                     <div id="comment-id-search-key" class="panel panel-default">
                         <div class="panel-heading">
                             <div class="row">
@@ -121,7 +172,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h3>Add a Comment</h3>
+                    <h3>Say Something</h3>
                     <form id="addcomment" method="post">
                         <p class="error"> </p>
                         <textarea id="comment-real" class="form-control custom-control"></textarea>
