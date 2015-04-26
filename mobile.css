@@ -147,6 +147,11 @@ input[type=password] {
     margin-bottom: 20px;
 }
 
+#headline h1,
+#headline p {
+    font-weight: 200;
+}
+
 #headline form {
     background-color: rgba(57, 177, 164, 0.7);
     padding: 5%;
@@ -217,7 +222,8 @@ input[type=password] {
 
 #section1 .objectId,
 #section2 .objectId,
-#section2 #idea-zone {
+#section2 #idea-zone,
+#section2 #help-zone {
     display: none;
 }
 

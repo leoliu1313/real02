@@ -2,10 +2,10 @@ $(document).ready(function () {
     console.log("ready!");
 
     /* 
-            POST values are not accessible client side
-            GET values can be accessed via
-            window.location.search
-            */
+    POST values are not accessible client side
+    GET values can be accessed via
+    window.location.search
+    */
 
     (function ($) {
         $.QueryString = (function (a) {
@@ -45,58 +45,58 @@ $(document).ready(function () {
     // set up list
     var options = {
         item: '<li class="list-group-item"><a href="#" class="list-group-item topic-real">' +
-        '<p class="TopicName"></p>' +
-        '<div class="row">' +
-        '<div class="col-xs-6 col-sm-3 col-md-3"><p class="CommentCount"></p></div>' +
-        '<div class="col-xs-6 col-sm-3 col-md-3"><p class="TopicOwner"></p></div>' +
-        '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
-        '</div>' +
-        '<p class="objectId"></p>' +
-        '</a></li>',
+            '<p class="TopicName"></p>' +
+            '<div class="row">' +
+            '<div class="col-xs-6 col-sm-3 col-md-3"><p class="CommentCount"></p></div>' +
+            '<div class="col-xs-6 col-sm-3 col-md-3"><p class="TopicOwner"></p></div>' +
+            '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
+            '</div>' +
+            '<p class="objectId"></p>' +
+            '</a></li>',
         valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'CommentCount', 'objectId']
     };
     window.theList = new List('id-search-key', options);
     var options2 = {
         item: '<li class="list-group-item comment">' +
-        '<p class="CommentOwner"></p>' +
-        '<span class="list-group-item">' +
-        '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
-        '</span>' +
-        '<p class="updatedAt"></p>' +
-        '<p class="objectId"></p>' +
-        '</li>',
+            '<p class="CommentOwner"></p>' +
+            '<span class="list-group-item">' +
+            '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
+            '</span>' +
+            '<p class="updatedAt"></p>' +
+            '<p class="objectId"></p>' +
+            '</li>',
         valueNames: ['CommentContent', 'CommentOwner', 'updatedAt', 'objectId']
     };
     window.theList2 = new List('comment-id-search-key', options2);
     var options3 = {
         item: '<li class="list-group-item vote not-ready">' +
-        '<p class="CommentOwner"></p>' +
-        '<span class="list-group-item">' + // box begins
-        '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
-        '<div class="row">' +
-        '<p class="UserVote">What do you think about this idea?</p>' +
-        '</div>' +
-        '<div class="btn-group row margin-bottom">' +
-        '<input type="submit" class="btn btn-default vote" value="Vote">' +
-        '<input type="submit" class="btn btn-default agree" value="Agree">' +
-        '<input type="submit" class="btn btn-default disagree" value="Disagree">' +
-        '</div>' +
-        '<div class="row">' +
-        '<p class="FinalVote">Vote: </p>' +
-        '</div>' +
-        '<div class="row">' +
-        '<p class="AgreeVote">Agree: </p>' +
-        '</div>' +
-        '<div class="row">' +
-        '<p class="DisagreeVote">Disagree: </p>' +
-        '</div>' +
-        '<div class="row">' +
-        '<p class="Ratio">Ratio: </p>' +
-        '</div>' +
-        '</span>' + // box ends
-        '<p class="updatedAt"></p>' +
-        '<p class="objectId"></p>' +
-        '</li>',
+            '<p class="CommentOwner"></p>' +
+            '<span class="list-group-item">' + // box begins
+            '<div class="CommentContent2"><p class="CommentContent"></p></div>' +
+            '<div class="row">' +
+            '<p class="UserVote">What do you think about this idea?</p>' +
+            '</div>' +
+            '<div class="btn-group row margin-bottom">' +
+            '<input type="submit" class="btn btn-default vote" value="Vote">' +
+            '<input type="submit" class="btn btn-default agree" value="Agree">' +
+            '<input type="submit" class="btn btn-default disagree" value="Disagree">' +
+            '</div>' +
+            '<div class="row">' +
+            '<p class="FinalVote">Vote: </p>' +
+            '</div>' +
+            '<div class="row">' +
+            '<p class="AgreeVote">Agree: </p>' +
+            '</div>' +
+            '<div class="row">' +
+            '<p class="DisagreeVote">Disagree: </p>' +
+            '</div>' +
+            '<div class="row">' +
+            '<p class="Ratio">Ratio: </p>' +
+            '</div>' +
+            '</span>' + // box ends
+            '<p class="updatedAt"></p>' +
+            '<p class="objectId"></p>' +
+            '</li>',
         valueNames: ['CommentContent', 'CommentOwner', 'updatedAt', 'objectId', 'agreeCount']
     };
     window.theList3 = new List('idea-id-search-key', options3);
@@ -145,8 +145,7 @@ $(document).ready(function () {
     function show_section1() {
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
-        }
-        else {
+        } else {
             return;
         }
         $('#section1').hide();
@@ -183,13 +182,13 @@ $(document).ready(function () {
                     $(this).append(" comments");
                 });
                 /*
-                        // register event for new items
-                        $(".topic-real").click(function () {
-                            $('#section1').hide();
-                            show_section2();
-                            return false;
-                        });
-                        */
+                // register event for new items
+                $(".topic-real").click(function () {
+                    $('#section1').hide();
+                    show_section2();
+                    return false;
+                });
+                */
             },
             error: function (error) {
                 $('#addtopic .error').text("Error: " + error.code + " " + error.message);
@@ -202,8 +201,7 @@ $(document).ready(function () {
     function show_section2() {
         if (window.currentUser) {
             $('#headline h1').text("Idea for Team - " + window.currentUser.get("username"));
-        }
-        else {
+        } else {
             return;
         }
         $('#section2').hide();
@@ -227,10 +225,10 @@ $(document).ready(function () {
                     success: function (RqueryAllComments) {
                         // RqueryAllComments is a collection of objects for comment
                         // update count without catching error messages
-						if (RqueryAllTopics.get("CommentCount") != RqueryAllComments.length) {
+                        if (RqueryAllTopics.get("CommentCount") != RqueryAllComments.length) {
                             RqueryAllTopics.set("CommentCount", RqueryAllComments.length);
                             RqueryAllTopics.save();
-						}
+                        }
                         // process RqueryAllComments
                         // for each comment loop
                         for (var i = 0; i < RqueryAllComments.length; i++) {
@@ -255,9 +253,35 @@ $(document).ready(function () {
                                     aVoteIdea.set("Vote", 1); // agree
                                     aVoteIdea.save(null, {
                                         success: function (aVoteIdea) {
-                                            show_section2();
                                         },
                                         error: function (aVoteIdea, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
+                                    var queryAllVotes = new Parse.Query(window.VoteIdea);
+                                    queryAllVotes.equalTo("Voter", window.currentUser.get("username"));
+                                    queryAllVotes.equalTo("IdeaId", $(this).attr("for"));
+                                    queryAllVotes.find({
+                                        /* wait for server response */
+                                        success: function (RqueryAllVotes) {
+										    var keepOne = 0;
+                                            for (var i = 0; i < RqueryAllVotes.length; i++) {
+											    if (RqueryAllVotes[i].get("Vote") == 2) {
+                                                    RqueryAllVotes[i].destroy();
+                                                }
+											    if (RqueryAllVotes[i].get("Vote") == 1) {
+												    if (!keepOne) {
+														keepOne = 1;
+													}
+													else {
+                                                        RqueryAllVotes[i].destroy();
+													}
+                                                }
+											}
+											show_section2();
+                                            $("html, body").scrollTop(0);
+                                        },
+                                        error: function (RqueryAllVotes, error) {
                                             $('#idea-error').text("Error: " + error.code + " " + error.message);
                                         }
                                     });
@@ -271,9 +295,35 @@ $(document).ready(function () {
                                     aVoteIdea.set("Vote", 2); // disagree
                                     aVoteIdea.save(null, {
                                         success: function (aVoteIdea) {
-                                            show_section2();
                                         },
                                         error: function (aVoteIdea, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
+                                    var queryAllVotes = new Parse.Query(window.VoteIdea);
+                                    queryAllVotes.equalTo("Voter", window.currentUser.get("username"));
+                                    queryAllVotes.equalTo("IdeaId", $(this).attr("for"));
+                                    queryAllVotes.find({
+                                        /* wait for server response */
+                                        success: function (RqueryAllVotes) {
+										    var keepOne = 0;
+                                            for (var i = 0; i < RqueryAllVotes.length; i++) {
+											    if (RqueryAllVotes[i].get("Vote") == 1) {
+                                                    RqueryAllVotes[i].destroy();
+                                                }
+											    if (RqueryAllVotes[i].get("Vote") == 2) {
+												    if (!keepOne) {
+														keepOne = 1;
+													}
+													else {
+                                                        RqueryAllVotes[i].destroy();
+													}
+                                                }
+											}
+											show_section2();
+                                            $("html, body").scrollTop(0);
+                                        },
+                                        error: function (RqueryAllVotes, error) {
                                             $('#idea-error').text("Error: " + error.code + " " + error.message);
                                         }
                                     });
@@ -281,13 +331,30 @@ $(document).ready(function () {
                                 });
                                 listElement.find('input.vote').attr("for", listElement.attr("id"));
                                 listElement.find('input.vote').click(function () {
+                                    var queryAllVotes = new Parse.Query(window.VoteIdea);
+                                    queryAllVotes.equalTo("Voter", window.currentUser.get("username"));
+									queryAllVotes.notEqualTo("IdeaId", $(this).attr("for"));
+                                    queryAllVotes.equalTo("Vote", 3);
+                                    queryAllVotes.find({
+                                        /* wait for server response */
+                                        success: function (RqueryAllVotes) {
+										    var keepOne = 0;
+                                            for (var i = 0; i < RqueryAllVotes.length; i++) {
+                                                RqueryAllVotes[i].destroy();
+											}
+                                        },
+                                        error: function (RqueryAllVotes, error) {
+                                            $('#idea-error').text("Error: " + error.code + " " + error.message);
+                                        }
+                                    });
                                     var aVoteIdea = new VoteIdea();
                                     aVoteIdea.set("Voter", window.currentUser.get("username"));
                                     aVoteIdea.set("IdeaId", $(this).attr("for"));
                                     aVoteIdea.set("Vote", 3); // vote
                                     aVoteIdea.save(null, {
                                         success: function (aVoteIdea) {
-                                            show_section2();
+											show_section2();
+                                            $("html, body").scrollTop(0);
                                         },
                                         error: function (aVoteIdea, error) {
                                             $('#idea-error').text("Error: " + error.code + " " + error.message);
@@ -338,7 +405,7 @@ $(document).ready(function () {
                                                 listElementForCallback.find('.UserVote').text("You ");
                                                 if (youAgree == 1) {
                                                     listElementForCallback.find('.UserVote').append("agree and ");
-                                                } 
+                                                }
                                                 if (youDisgree == 1) {
                                                     listElementForCallback.find('.UserVote').append("disagree and ");
                                                 }
@@ -347,7 +414,9 @@ $(document).ready(function () {
                                                 }
                                                 listElementForCallback.find('.UserVote').append("help this decision making on " + OneVote.updatedAt.toLocaleString());
                                             }
-                                            window.theList3.get("objectId", listElementForCallback.attr("id"))[0].values({agreeCount:agreeCount});
+                                            window.theList3.get("objectId", listElementForCallback.attr("id"))[0].values({
+                                                voteCount: voteCount
+                                            });
                                             var agreeFinaltext = listElementForCallback.find('.AgreeVote').text();
                                             var disagreeFinaltext = listElementForCallback.find('.DisagreeVote').text();
                                             var voteFinaltext = listElementForCallback.find('.FinalVote').text();
@@ -361,20 +430,20 @@ $(document).ready(function () {
                                             listElementForCallback.find('.DisagreeVote').text(disagreeFinaltext);
                                             listElementForCallback.find('.FinalVote').text(voteFinaltext);
                                             var rateFinalnumber = agreeCount / (agreeCount + disagreeCount) * 100;
-                                            listElementForCallback.find('.Ratio').append( rateFinalnumber.toFixed(2) + "%");
+                                            listElementForCallback.find('.Ratio').append(rateFinalnumber.toFixed(2) + "%");
                                         }
 
                                         // TODO:
                                         // now we update the list every time we add an idea to the list
                                         // only need to update once
                                         // but it is hard to know this comment is the last idea
-                                        window.theList3.sort("agreeCount", {
+                                        window.theList3.sort("voteCount", {
                                             order: "desc"
                                         });
                                         window.theList3.search($("#idea-search-real").val(), ['CommentContent']);
-										var bestIdea = $('li.vote').first();
-										$("#current-decision").text(bestIdea.find(".CommentContent").text());
-										$("#current-decision-vote").text(bestIdea.find(".FinalVote").text());
+                                        var bestIdea = $('li.vote').first();
+                                        $("#current-decision").text(bestIdea.find(".CommentContent").text());
+                                        $("#current-decision-vote").text(bestIdea.find(".FinalVote").text());
                                     },
                                     error: function (RqueryAllVotes, error) {
                                         $('#idea-error').text("Error: " + error.code + " " + error.message);
@@ -383,8 +452,8 @@ $(document).ready(function () {
 
                                 window.theList2.add({
                                     CommentContent: OneComment.get('CommentOwner') +
-                                    " proposed an idea: " +
-                                    OneComment.get('CommentContent'),
+                                        " proposed an idea: " +
+                                        OneComment.get('CommentContent'),
                                     CommentOwner: "",
                                     updatedAt: OneComment.updatedAt.toLocaleString(),
                                     objectId: OneComment.id
@@ -595,6 +664,16 @@ $(document).ready(function () {
     $("#close-idea-zone").click(function () {
         $("#idea-zone").hide();
         $("#open-idea-zone").show();
+        return false;
+    });
+    $("#open-help-zone").click(function () {
+        $("#open-help-zone").hide();
+        $("#help-zone").show();
+        return false;
+    });
+    $("#close-help-zone").click(function () {
+        $("#help-zone").hide();
+        $("#open-help-zone").show();
         return false;
     });
     $("#addidea").submit(function (e) {
