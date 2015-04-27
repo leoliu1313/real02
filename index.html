@@ -109,97 +109,117 @@
                         <h4 class="updatedAt"></h4>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <h3><a id="go-to-section1" href="#">Back to Project Topic List</a></h3>
+                        <!-- <h3><a id="go-to-section1" href="#">Back to Project Topic List</a></h3> -->
+                        <h3><a href="/index.html">Back to Project Topic List</a></h3>
                     </div>
                 </div>
                 <div class="buffer-height"></div>
-                <div class="row">
-                    <h3>Current Decision</h3>
-                    <h4>based on the current largest vote count</h4>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <ul class="list-group list">
-                                <li class="list-group-item decision">
-                                    <p id="current-decision-vote"></p>
-                                    <span class="list-group-item">
-                                            <p id="current-decision">N/A</p>
-                                        </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="buffer-height"></div>
-                <div class="row">
-                    <h3>Proposed Idea</h3>
-                    <h4>sorted by vote count</h4>
-                    <input id="open-help-zone" type="button" class="btn btn-default" value="Help">
-                    <div id="help-zone">
-                        <p>Press Vote on your favorite idea, and all the other ideas will be unvoted.</p>
-                        <p>Press Agree on any idea you agree with.</p>
-                        <p>Press Disagree on any idea you disagree with.</p>
-                        <p>You can change your mind at any time.</p>
-                        <input id="close-help-zone" type="button" class="btn btn-default" value="Close">
-                    </div>
-                    <p id="idea-error" class="error"> </p>
-                    <div id="idea-id-search-key" class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <input id="idea-search-real" type="text" class="form-control search" placeholder="Search">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#sectionC">Discussion</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#sectionB">Proposed Idea</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#sectionA">Current Decision</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="sectionA" class="tab-pane fade">
+                        <div class="row">
+                            <h3>Current Decision</h3>
+                            <h4>based on the current largest vote count</h4>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <ul class="list-group list">
+                                        <li class="list-group-item decision">
+                                            <p id="current-decision-vote"></p>
+                                            <span class="list-group-item">
+                                                    <p id="current-decision">N/A</p>
+                                                </span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <ul class="list-group list">
-                            </ul>
-                        </div>
+                        <div class="buffer-height"></div>
                     </div>
-                    <input id="open-idea-zone" type="button" class="btn btn-default" value="Press here to propose an idea">
-                    <div id="idea-zone">
-                        <p>A proposed idea is one of the decision choices and will be voted by everyone.</p>
-                        <p>Everyone can agree or disagree with multiple proposed ideas.</p>
-                        <p>But, only one idea can be voted as the final decision.</p>
-                        <form id="addidea" method="post">
-                            <p class="error"> </p>
-                            <textarea id="idea-real" class="form-control custom-control"></textarea>
-                            <input type="submit" class="btn btn-default" value="Propose this idea">
-                            <input id="close-idea-zone" type="button" class="btn btn-default" value="Close">
-                        </form>
-                        <hr>
-                    </div>
-                </div>
-                <div class="buffer-height"></div>
-                <div class="row">
-                    <h3>Discussion</h3>
-                    <div id="comment-id-search-key" class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <input id="comment-search-real" type="text" class="form-control search" placeholder="Search">
+                    <div id="sectionB" class="tab-pane fade">
+                        <div class="row">
+                            <h3>Proposed Idea</h3>
+                            <h4>sorted by vote count</h4>
+                            <input id="open-help-zone" type="button" class="btn btn-default" value="Help">
+                            <div id="help-zone">
+                                <p>Press Vote on your favorite idea, and all the other ideas will be unvoted.</p>
+                                <p>Press Agree on any idea you agree with.</p>
+                                <p>Press Disagree on any idea you disagree with.</p>
+                                <p>You can change your mind at any time.</p>
+                                <input id="close-help-zone" type="button" class="btn btn-default" value="Close">
+                            </div>
+                            <p id="idea-error" class="error"> </p>
+                            <div id="idea-id-search-key" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <input id="idea-search-real" type="text" class="form-control search" placeholder="Search">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group list">
+                                    </ul>
+                                </div>
+                            </div>
+                            <input id="open-idea-zone" type="button" class="btn btn-default" value="Press here to propose an idea">
+                            <div id="idea-zone">
+                                <p>A proposed idea is one of the decision choices and will be voted by everyone.</p>
+                                <p>Everyone can agree or disagree with multiple proposed ideas.</p>
+                                <p>But, only one idea can be voted as the final decision.</p>
+                                <form id="addidea" method="post">
+                                    <p class="error"> </p>
+                                    <textarea id="idea-real" class="form-control custom-control"></textarea>
+                                    <input type="submit" class="btn btn-default" value="Propose this idea">
+                                    <input id="close-idea-zone" type="button" class="btn btn-default" value="Close">
+                                </form>
+                                <hr>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <ul class="list-group list">
-                            </ul>
+                        <div class="buffer-height"></div>
+                    </div>
+                    <div id="sectionC" class="tab-pane fade in active">
+                        <div class="row">
+                            <h3>Discussion</h3>
+                            <div id="comment-id-search-key" class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <input id="comment-search-real" type="text" class="form-control search" placeholder="Search">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group list">
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                        <div class="buffer-height"></div>
+                        <div class="row">
+                            <h3>Say Something</h3>
+                            <form id="addcomment" method="post">
+                                <p class="error"> </p>
+                                <textarea id="comment-real" class="form-control custom-control"></textarea>
+                                <input type="submit" class="btn btn-default" value="Submit">
+                            </form>
+                        </div>
+                        <div class="buffer-height"></div>
+                        <div class="row">
+                            <h3>Upload an image</h3>
+                            <button id="button-upload-file" class="btn btn-default" style="margin-bottom: 15px;" onclick="$('#input-upload-file').click()">Select an image from local device</button>
+                            <input id="input-upload-file" style="display: none;" type="file">
+                            <p id="text-upload-file"></p>
+                            <img id="img-upload-file" style="max-width: 100%;" src="favicon.ico">
+                        </div>
+                        <div class="buffer-height"></div>
                     </div>
                 </div>
-                <div class="buffer-height"></div>
-                <div class="row">
-                    <h3>Say Something</h3>
-                    <form id="addcomment" method="post">
-                        <p class="error"> </p>
-                        <textarea id="comment-real" class="form-control custom-control"></textarea>
-                        <input type="submit" class="btn btn-default" value="Submit">
-                    </form>
-                </div>
-                <div class="buffer-height"></div>
-                <div class="row">
-                    <h3>Upload an image</h3>
-                    <button id="button-upload-file" class="btn btn-default" style="margin-bottom: 15px;" onclick="$('#input-upload-file').click()">Select an image from local device</button>
-                    <input id="input-upload-file" style="display: none;" type="file">
-                    <p id="text-upload-file"></p>
-                    <img id="img-upload-file" style="max-width: 100%;" src="favicon.ico">
-                </div>
-                <div class="buffer-height"></div>
             </div>
         </div>
         <div class="not-footer-buffer"></div>
