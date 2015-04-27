@@ -565,6 +565,9 @@ $(document).ready(function () {
                         // update search result
                         $('#open-idea-zone').show();
                         $("html, body").scrollTop(0);
+                        window.theList2.sort("updatedAt", {
+                            order: "asc"
+                        });
                         window.theList2.search($("#comment-search-real").val(), ['CommentContent']);
                     },
                     error: function (error) {
@@ -849,6 +852,9 @@ $(document).ready(function () {
             });
             // change to search TopicOwner column
             // window.theList.search($("#search-real").val(), ['TopicOwner']);
+            window.theList.sort("CommentCount", {
+                order: "desc"
+            });
             window.theList.search($("#search-real").val());
         }, 100, "search_clear_do_clear");
     };
