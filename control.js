@@ -7,6 +7,7 @@ $(document).ready(function () {
     window.location.search
     */
 
+    // register $.QueryString["id"] to read ?id=
     (function ($) {
         $.QueryString = (function (a) {
             if (a == "") return {};
@@ -50,12 +51,14 @@ $(document).ready(function () {
             '<p class="TopicName"></p>' +
             '<div class="row">' +
             '<div class="col-xs-6 col-sm-3 col-md-3"><p class="CommentCount"></p></div>' +
-            '<div class="col-xs-6 col-sm-3 col-md-3"><p class="TopicOwner"></p></div>' +
-            '<div class="col-xs-12 col-sm-6 col-md-6"><p class="updatedAt"></p></div>' +
+            '<div class="col-xs-6 col-sm-3 col-md-3"><p class="newUpdater"></p></div>' +
+            '<div class="col-xs-12 col-sm-6 col-md-6"><p class="newUpdate"></p></div>' +
             '</div>' +
+            '<p class="TopicOwner p-hide"></p>' +
+            '<p class="updatedAt p-hide"></p>' +
             '<p class="objectId"></p>' +
             '</a></li>',
-        valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'CommentCount', 'objectId']
+        valueNames: ['TopicName', 'TopicOwner', 'updatedAt', 'CommentCount', 'objectId', 'newUpdater', 'newUpdate']
     };
     window.theList = new List('id-search-key', options);
     var options2 = {
@@ -102,6 +105,21 @@ $(document).ready(function () {
         valueNames: ['CommentContent', 'CommentOwner', 'updatedAt', 'objectId', 'agreeCount']
     };
     window.theList3 = new List('idea-id-search-key', options3);
+
+    function update_section1() {
+        // update search result
+        // change to search TopicOwner column
+        // window.theList.search($("#search-real").val(), ['TopicOwner']);
+        window.theList.sort("newUpdate", {
+            order: "desc"
+        });
+        /*
+        $("p.CommentCount").each(function (index) {
+            $(this).append(" comments");
+        });
+        */
+        window.theList.search($("#search-real").val());
+    }
 
     // set up parse.com
     Parse.initialize("gLr9xymyelDTkCD8MTCLt3bVVUgtANSWyA0HUa3P", "P2eQs1HP29cvjU7MHNN8k4iZtXTdqD8xEgKhVDRJ");
@@ -196,26 +214,24 @@ $(document).ready(function () {
                 // $('#addtopic .error').text("Successfully retrieved " + results.length + " data - ");
                 for (var i = 0; i < results.length; i++) {
                     var object = results[i];
+                    // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
                     window.theList.add({
                         TopicName: object.get('TopicName'),
                         TopicOwner: object.get('TopicOwner'),
                         updatedAt: object.updatedAt.toLocaleString(),
-                        CommentCount: object.get('CommentCount'),
-                        objectId: object.id
+                        CommentCount: object.get('CommentCount') + " comments",
+                        objectId: object.id,
+                        newUpdater: object.get('TopicOwner'),
+                        newUpdate: object.updatedAt.toLocaleString()
                     });
-                    // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
                 }
-                // update search result
-                window.theList.sort("updatedAt", {
+                window.theList.sort("newUpdate", {
                     order: "desc"
                 });
                 window.theList.search($("#search-real").val(), ['TopicName']);
                 // set up GET method parsing query strings
                 $("a.list-group-item").each(function (index) {
                     $(this).attr("href", "?id=" + $(this).find(".objectId").text());
-                });
-                $("p.CommentCount").each(function (index) {
-                    $(this).append(" comments");
                 });
                 /*
                 // register event for new items
@@ -225,6 +241,27 @@ $(document).ready(function () {
                     return false;
                 });
                 */
+                // sorting
+                for (var i = 0; i < results.length; i++) {
+                    var object = results[i];
+                    /* access Comment system - use Project Topic ID to get comments */
+                    var queryAllComments = new Parse.Query(window.CommentTopic);
+                    queryAllComments.equalTo("TopicId", object.id);
+                    queryAllComments.descending("updatedAt");
+                    queryAllComments.first({
+                        /* wait for server response */
+                        success: function (OneComment) {
+                            if (OneComment) {
+                                var theListOne = window.theList.get('objectId', OneComment.get('TopicId'))[0];
+                                theListOne.values({
+                                    newUpdater: OneComment.get('CommentOwner'),
+                                    newUpdate: OneComment.updatedAt.toLocaleString()
+                                });
+                                update_section1();
+                            }
+                        }
+                    });
+                }
             },
             error: function (error) {
                 $('#addtopic .error').text("Error: " + error.code + " " + error.message);
@@ -822,13 +859,13 @@ $(document).ready(function () {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "https://api.imgur.com/3/image.json");
         xhr.onload = function () {
-		        var link = JSON.parse(xhr.responseText).data.link;
+                var link = JSON.parse(xhr.responseText).data.link;
                 $("#button-upload-file").show();
                 $("#text-upload-file").text("The following is a preview. Pres the above Submit button with url address link.");
                 $("#text-upload-file").show();
                 $("#img-upload-file").attr("src", link);
                 $("#img-upload-file").show();
-				$("#comment-real").val($("#comment-real").val() + "\n" + link + "\n");
+                $("#comment-real").val($("#comment-real").val() + "\n" + link + "\n");
             }
             // Get your own key http://api.imgur.com/
         xhr.setRequestHeader('Authorization', 'Client-ID 28aaa2e823b03b1');
@@ -847,15 +884,7 @@ $(document).ready(function () {
             $('#search-real').val('');
             $('#search-real').focus();
             $('#search-clear').toggle(false);
-            window.theList.sort("CommentCount", {
-                order: "desc"
-            });
-            // change to search TopicOwner column
-            // window.theList.search($("#search-real").val(), ['TopicOwner']);
-            window.theList.sort("CommentCount", {
-                order: "desc"
-            });
-            window.theList.search($("#search-real").val());
+            update_section1();
         }, 100, "search_clear_do_clear");
     };
     $('#search-real').on("input", search_real_sync_up);

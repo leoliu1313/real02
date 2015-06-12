@@ -225,6 +225,7 @@ input[type=password] {
 }
 
 #section1 .objectId,
+#section1 .p-hide,
 #section2 .objectId,
 #section2 #idea-zone,
 #section2 #help-zone {
