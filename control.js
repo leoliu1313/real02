@@ -206,7 +206,7 @@ $(document).ready(function () {
                     // $('#addtopic .error').append(object.get('TopicName') + " / " + object.get('TopicOwner') + " - ");
                 }
                 // update search result
-                window.theList.sort("CommentCount", {
+                window.theList.sort("updatedAt", {
                     order: "desc"
                 });
                 window.theList.search($("#search-real").val(), ['TopicName']);
